@@ -1,0 +1,9 @@
+app.iml
+.gradle
+.idea
+build/*
+!build/libs/
+
+
+
+
