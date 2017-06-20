@@ -1,7 +1,8 @@
 FROM frolvlad/alpine-oraclejdk8:slim
 
-VOLUME /tmp
+COPY /build/libs/app.jar /opt/app/lib/
 
-ADD /build/libs/app.jar
+ENTRYPOINT ["/usr/bin/java"]
+CMD ["-jar", "/opt/app/lib/app.jar"]
 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+EXPOSE 8888
