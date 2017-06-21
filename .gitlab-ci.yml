@@ -10,6 +10,12 @@ build:
   stage: build
   script:
     - ./gradlew clean jar
+  artifacts:
+    paths:
+      - build/libs/*.jar
+    expire_in: 1 week
+  only:
+    - master
 
 docker:
   image: docker:latest

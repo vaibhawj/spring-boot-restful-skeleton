@@ -2,4 +2,4 @@ app.iml
 .gradle
 .idea
 build/*
-!build/libs/
+!build/libs/dummy.txt
