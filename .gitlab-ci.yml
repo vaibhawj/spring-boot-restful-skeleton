@@ -5,8 +5,27 @@ image: docker:latest
 services:
   - docker:dind
 
+stages:
+  - build
+  - docker
+
+before_script:
+#  - echo `pwd` # debug
+#  - echo "$CI_BUILD_NAME, $CI_BUILD_REF_NAME $CI_BUILD_STAGE" # debug
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+cache:
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
+
 build:
   stage: build
+  script:
+    - ./gradlew clean jar
+
+docker:
+  stage: docker
   script:
     - export IMAGE_TAG=$(echo -en $CI_COMMIT_REF_NAME | tr -c '[:alnum:]_.-' '-')
     - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
