@@ -7,15 +7,15 @@ stages:
   - build
   - docker
 
-before_script:
+#before_script:
 #  - echo `pwd` # debug
 #  - echo "$CI_BUILD_NAME, $CI_BUILD_REF_NAME $CI_BUILD_STAGE" # debug
-  - export GRADLE_USER_HOME=`pwd`/.gradle
+#  - export GRADLE_USER_HOME=`pwd`/.gradle
 
-cache:
-  paths:
-    - .gradle/wrapper
-    - .gradle/caches
+#cache:
+#  paths:
+#    - .gradle/wrapper
+#    - .gradle/caches
 
 build:
   image: java:8-jdk
@@ -31,3 +31,6 @@ docker:
     - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
     - docker build --pull -t "$CI_REGISTRY_IMAGE:$IMAGE_TAG" .
     - docker push "$CI_REGISTRY_IMAGE:$IMAGE_TAG"
+
+after_script:
+  - echo "End CI"
