@@ -4,9 +4,8 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.Locale;
 
-import static com.vibe.app.util.Helper.formatter;
+import static com.vibe.app.util.Helper.DATE_TIME_FORMATTER;
 
 public class DateValidator implements ConstraintValidator<DateConstraint, String> {
 
@@ -17,14 +16,15 @@ public class DateValidator implements ConstraintValidator<DateConstraint, String
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-
+        context.disableDefaultConstraintViolation();
         if (null == value) {
+            context.buildConstraintViolationWithTemplate("{com.vibe.app.validation.DateValidator.NullDate}").addConstraintViolation();
             return false;
         }
         try {
-            formatter.withLocale(Locale.ENGLISH);
-            LocalDate localDate = LocalDate.parse(value, formatter);
+            LocalDate localDate = LocalDate.parse(value, DATE_TIME_FORMATTER);
         } catch (DateTimeParseException pe) {
+            context.buildConstraintViolationWithTemplate("{com.vibe.app.validation.DateValidator.invalidDate}").addPropertyNode("").addConstraintViolation();
             return false;
         }
         return true;

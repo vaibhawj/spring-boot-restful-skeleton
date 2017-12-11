@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DateConstraint {
 
-    String message() default "Invalid date";
+    String message() default "{com.vibe.app.validation.DateValidator.invalidDate}";
 
     Class<?>[] groups() default {};
 

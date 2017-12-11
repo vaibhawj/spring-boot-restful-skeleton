@@ -11,11 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.Locale;
 
-import static com.vibe.app.util.Helper.formatter;
+import static com.vibe.app.util.Helper.DATE_TIME_FORMATTER;
 
 @Api(value = "API", description = "API for greet")
 @RestController
@@ -34,14 +32,13 @@ public class AppController {
     public @ResponseBody
     ResponseEntity<PersonResponse> greetPerson(@RequestBody @Valid @ApiParam(name = "body", value = "body") Person p, BindingResult result) {
 
-        if(result.hasErrors()){
-            return new ResponseEntity<PersonResponse>(new PersonResponse("Invalid input"), HttpStatus.BAD_REQUEST);
+        if (result.hasErrors()) {
+            return new ResponseEntity<PersonResponse>(new PersonResponse(result.getAllErrors().get(0).getDefaultMessage()), HttpStatus.BAD_REQUEST);
         }
 
         PersonResponse response = new PersonResponse();
         String dob = p.getDob();
-        formatter.withLocale(Locale.ENGLISH);
-        LocalDate dobDate = LocalDate.parse(dob, formatter);
+        LocalDate dobDate = LocalDate.parse(dob, DATE_TIME_FORMATTER);
         LocalDate currentDate = LocalDate.now();
         long age = ChronoUnit.YEARS.between(dobDate, currentDate);
         response.setMessage("Hello " + p.getName() + ", your age is " + age);
