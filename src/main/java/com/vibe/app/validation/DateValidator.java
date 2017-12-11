@@ -2,7 +2,6 @@ package com.vibe.app.validation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.lang.annotation.Annotation;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
@@ -18,6 +17,10 @@ public class DateValidator implements ConstraintValidator<DateConstraint, String
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
+
+        if (null == value) {
+            return false;
+        }
         try {
             formatter.withLocale(Locale.ENGLISH);
             LocalDate localDate = LocalDate.parse(value, formatter);

@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DateConstraint {
 
-    String message() default "Invalid phone number";
+    String message() default "Invalid date";
 
     Class<?>[] groups() default {};
 
