@@ -1,4 +1,4 @@
-package com.vibe.app.com.vibe.app.config;
+package com.vibe.app.config;
 
 import io.swagger.annotations.Api;
 import org.springframework.context.annotation.Bean;

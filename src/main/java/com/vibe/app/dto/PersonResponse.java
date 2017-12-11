@@ -1,4 +1,4 @@
-package com.vibe.app.com.vibe.app.dto;
+package com.vibe.app.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
