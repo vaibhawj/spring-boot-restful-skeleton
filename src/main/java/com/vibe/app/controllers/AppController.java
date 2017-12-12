@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-import static com.vibe.app.util.Helper.DATE_TIME_FORMATTER;
+import static com.vibe.app.util.Helper.MM_SLASH_DD_SLASH_YYYY;
 
 @Api(value = "API", description = "API for greet")
 @RestController
@@ -28,21 +28,21 @@ public class AppController {
             httpMethod = "POST")
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Fields are with validation errors"),
-            @ApiResponse(code = 201, message = "")})
+            @ApiResponse(code = 202, message = "")})
     public @ResponseBody
     ResponseEntity<PersonResponse> greetPerson(@RequestBody @Valid @ApiParam(name = "body", value = "body") Person p, BindingResult result) {
 
         if (result.hasErrors()) {
-            return new ResponseEntity<PersonResponse>(new PersonResponse(result.getAllErrors().get(0).getDefaultMessage()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new PersonResponse(result.getAllErrors().get(0).getDefaultMessage()), HttpStatus.BAD_REQUEST);
         }
 
         PersonResponse response = new PersonResponse();
         String dob = p.getDob();
-        LocalDate dobDate = LocalDate.parse(dob, DATE_TIME_FORMATTER);
+        LocalDate dobDate = LocalDate.parse(dob, MM_SLASH_DD_SLASH_YYYY);
         LocalDate currentDate = LocalDate.now();
         long age = ChronoUnit.YEARS.between(dobDate, currentDate);
         response.setMessage("Hello " + p.getName() + ", your age is " + age);
 
-        return new ResponseEntity<PersonResponse>(response, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 }
