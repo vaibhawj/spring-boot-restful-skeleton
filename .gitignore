@@ -1,4 +1,4 @@
-app.iml
+spring-boot-restful-skeleton.iml
 .gradle
 .idea
 build/*

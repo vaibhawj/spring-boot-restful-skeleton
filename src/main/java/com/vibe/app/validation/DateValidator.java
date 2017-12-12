@@ -24,7 +24,7 @@ public class DateValidator implements ConstraintValidator<DateConstraint, String
         try {
             LocalDate localDate = LocalDate.parse(value, DATE_TIME_FORMATTER);
         } catch (DateTimeParseException pe) {
-            context.buildConstraintViolationWithTemplate("{com.vibe.app.validation.DateValidator.invalidDate}").addPropertyNode("").addConstraintViolation();
+            context.buildConstraintViolationWithTemplate("{com.vibe.app.validation.DateValidator.invalidDate}").addConstraintViolation();
             return false;
         }
         return true;
