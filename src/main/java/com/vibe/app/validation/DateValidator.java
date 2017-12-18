@@ -1,13 +1,18 @@
 package com.vibe.app.validation;
 
+import com.vibe.app.util.Helper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
-import static com.vibe.app.util.Helper.MM_SLASH_DD_SLASH_YYYY;
-
 public class DateValidator implements ConstraintValidator<DateConstraint, String> {
+
+    @Autowired
+    private Environment environment;
 
     @Override
     public void initialize(DateConstraint constraintAnnotation) {
@@ -22,11 +27,15 @@ public class DateValidator implements ConstraintValidator<DateConstraint, String
             return false;
         }
         try {
-            LocalDate localDate = LocalDate.parse(dateStr, MM_SLASH_DD_SLASH_YYYY);
+            LocalDate localDate = LocalDate.parse(dateStr, Helper.getFormatter(environment.getProperty("date.format")));
         } catch (DateTimeParseException pe) {
             context.buildConstraintViolationWithTemplate("{com.vibe.app.validation.DateValidator.invalidDate}").addConstraintViolation();
             return false;
         }
         return true;
+    }
+
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
     }
 }

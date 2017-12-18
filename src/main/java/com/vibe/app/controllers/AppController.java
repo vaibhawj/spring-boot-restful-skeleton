@@ -2,7 +2,10 @@ package com.vibe.app.controllers;
 
 import com.vibe.app.dto.Person;
 import com.vibe.app.dto.PersonResponse;
+import com.vibe.app.util.Helper;
 import io.swagger.annotations.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,17 +16,18 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-import static com.vibe.app.util.Helper.MM_SLASH_DD_SLASH_YYYY;
-
 @Api(value = "API", description = "API for greet")
 @RestController
 @RequestMapping("/api")
 public class AppController {
 
+    @Autowired
+    private Environment environment;
+
     @RequestMapping(value = "/greet/person", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "Greet the person and tell his/her age", notes = "Enter dob in MM/dd/yyyy format",
+    @ApiOperation(value = "Greet the person and tell his/her age",
             produces = "application/json",
             httpMethod = "POST")
     @ApiResponses(value = {
@@ -38,7 +42,7 @@ public class AppController {
 
         PersonResponse response = new PersonResponse();
         String dob = p.getDob();
-        LocalDate dobDate = LocalDate.parse(dob, MM_SLASH_DD_SLASH_YYYY);
+        LocalDate dobDate = LocalDate.parse(dob, Helper.getFormatter(environment.getProperty("date.format")));
         LocalDate currentDate = LocalDate.now();
         long age = ChronoUnit.YEARS.between(dobDate, currentDate);
         response.setMessage("Hello " + p.getName() + ", your age is " + age);

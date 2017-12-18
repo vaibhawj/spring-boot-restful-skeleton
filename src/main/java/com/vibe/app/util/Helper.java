@@ -4,6 +4,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class Helper {
-    public static final DateTimeFormatter MM_SLASH_DD_SLASH_YYYY = DateTimeFormatter.ofPattern("MM/dd/yyyy").withLocale(Locale.ENGLISH);
+
+    public static final DateTimeFormatter getFormatter(String format) {
+        return DateTimeFormatter.ofPattern(format).withLocale(Locale.ENGLISH);
+    }
 
 }
